@@ -1,0 +1,74 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{isNew? 'Alta de producto' : 'Editar producto'}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+    <i class="fa fa-times"></i>
+  </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="container">
+            <ngx-spinner></ngx-spinner>
+            <form [formGroup]="form">
+                <div class="row form-group">
+                    <label for="name" class="col-md-2 col-form-label">Nombre: <span class="text-danger">*</span></label>
+                    <div class="col-md-4">
+                        <input formControlName="name" type="text" class="form-control" id="name" placeholder="Nombre">
+                        <div *ngIf="form.controls.name.invalid && (form.controls.name.dirty || form.controls.name.touched)">
+                            <small class="text-danger" *ngIf="form.controls.name.errors.required">
+                              Este campo es obligatorio.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label for="brand" class="col-md-2 col-form-label">Marca: <span class="text-danger">*</span></label>
+                    <div class="col-md-4">
+                        <select formControlName="brand" class="custom-select" id="brand">
+                        <option selected value="">Seleccione una marca</option>
+                        <option *ngFor="let brandOption of brandList" value={{brandOption.id}}>
+                            {{brandOption.name}}
+                        </option>
+                      </select>
+                        <div *ngIf="form.controls.brand.invalid && (form.controls.brand.dirty || form.controls.brand.touched)">
+                            <small class="text-danger" *ngIf="form.controls.brand.errors.required">
+                          Este campo es obligatorio.
+                        </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label for="cost" class="col-md-2 col-form-label">Costo: <span class="text-danger">*</span></label>
+                    <div class="col-md-4">
+                        <input formControlName="cost" type="number" class="form-control" id="cost" (change)="priceValid()" step="any" placeholder="Costo">
+                        <div *ngIf="form.controls.cost.invalid && (form.controls.cost.dirty || form.controls.cost.touched)">
+                            <small class="text-danger" *ngIf="form.controls.cost.errors.required">
+                              Este campo es obligatorio.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label for="price" class="col-md-2 col-form-label">Precio: <span class="text-danger">*</span></label>
+                    <div class="col-md-4">
+                        <input formControlName="price" type="number" class="form-control" id="price" (change)="priceValid()" step="any" placeholder="Precio">
+                        <div *ngIf="form.controls.price.invalid && (form.controls.price.dirty || form.controls.price.touched)">
+                            <small class="text-danger" *ngIf="form.controls.price.errors.required">
+                              Este campo es obligatorio.
+                            </small>
+                        </div>
+                        <div *ngIf="!form.valid">
+                            <small class="text-danger" *ngIf="priceValid()">
+                              El precio debe ser mayor o igual al costo.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <ngb-alert *ngIf="errorMessage" type="danger" (close)="errorMessage = null">{{ errorMessage }}</ngb-alert>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="save()">Guardar</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss()">Cerrar</button>
+</div>
